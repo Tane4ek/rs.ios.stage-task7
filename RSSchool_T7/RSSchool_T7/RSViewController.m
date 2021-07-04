@@ -29,47 +29,71 @@
     // setup programLabel
     [self.programLabel setText:@"RSSchool"];
     //    setup loginText
-    self.loginText.layer.borderColor = UIColor.blackColor.CGColor;
+    self.loginText.layer.borderColor = [UIColor colorWithRed:76.0/255 green:92.0/255 blue:104.0/255 alpha:1].CGColor;
     self.loginText.layer.borderWidth = 1.5;
     self.loginText.layer.cornerRadius = 5;
     
     //    setup passwordText
-    self.passwordText.layer.borderColor = UIColor.blackColor.CGColor;
+    self.passwordText.layer.borderColor = [UIColor colorWithRed:76.0/255 green:92.0/255 blue:104.0/255 alpha:1].CGColor;
     self.passwordText.layer.borderWidth = 1.5;
     self.passwordText.layer.cornerRadius = 5;
     
     //    setup authorizeButton
-    self.authorizeButton.layer.borderColor = UIColor.blueColor.CGColor;
+    self.authorizeButton.layer.borderColor = [UIColor colorWithRed:128.0/255 green:164.0/255 blue:237.0/255 alpha:1].CGColor;
     self.authorizeButton.layer.borderWidth = 2;
     self.authorizeButton.layer.cornerRadius = 10;
     [self.authorizeButton setTitle:@"Authorize" forState:UIControlStateDisabled];
-    [self.authorizeButton setTitleColor:UIColor.blueColor forState:UIControlStateDisabled];
+    [self.authorizeButton setTitleColor:[UIColor colorWithRed:128.0/255 green:164.0/255 blue:237.0/255 alpha:1] forState:UIControlStateDisabled];
     
     
-    //    button Action
+    //    button action
     [self.authorizeButton addTarget:self
-                             action:@selector(authorizeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
- 
+                          action:@selector(authorizeButtonTapped:)
+                          forControlEvents:UIControlEventTouchUpInside];
+//     textField action
+//    здесь хотела прописать очистку поля и возват изначального цвета рамки
+    [self.loginText addTarget:self
+                       action:@selector(startWriting:)
+             forControlEvents:UIControlEventEditingDidBegin];
+
+    [self.passwordText addTarget:self
+                       action:@selector(startWriting:)
+             forControlEvents:UIControlEventEditingDidBegin];
+    
     // Subscrube on keyboard events
     [self hideWhenTappedAround];
-
     // Set delegates
     
     self.loginText.delegate = self;
     self.passwordText.delegate = self;
 }
 
-- (void) authorizeButtonTapped:(UIButton *)sender {
-    NSString * text = self.loginText.text;
-    if (text != @"username") {
-        [self.loginText setText:@" "];
-        self.loginText.layer.borderColor = UIColor.redColor.CGColor;
-    } else {
-        [self.loginText setText:text];
-        self.loginText.layer.borderColor = UIColor.blackColor.CGColor;
+- (void)authorizeButtonTapped:(UIButton *)sender {
+    [self.authorizeButton setTitleColor:[UIColor colorWithRed:128.0/255 green:164.0/255 blue:237.0/255 alpha:0.4] forState:UIControlStateHighlighted];
+    NSString * loginText = self.loginText.text;
+    NSString * passwordText = self.passwordText.text;
+    if ((![loginText  isEqual: @"username"]) || (![passwordText isEqual:@"password"])){
+        self.loginText.layer.borderColor = [UIColor colorWithRed:194.0/255 green:1.0/255 blue:20.0/255 alpha:1].CGColor;
+        self.passwordText.layer.borderColor = [UIColor colorWithRed:194.0/255 green:1.0/255 blue:20.0/255 alpha:1].CGColor;
+    } else if (([loginText  isEqual: @"username"]) && ([passwordText  isEqual: @"password"])){
+        self.loginText.layer.borderColor = [UIColor colorWithRed:145.0/255 green:199.0/255 blue:177.0/255 alpha:0.5].CGColor;
+        self.passwordText.layer.borderColor = [UIColor colorWithRed:145.0/255 green:199.0/255 blue:177.0/255 alpha:0.5].CGColor;
+        
+
     }
     NSLog(@"Authorize button tapped");
 }
+
+- (void)startWriting:(UITextField *)sender {
+    if (![_loginText  isEqual: @"username"]) {
+    self.loginText.layer.borderColor = [UIColor colorWithRed:76.0/255 green:92.0/255 blue:104.0/255 alpha:1].CGColor;
+    [self.loginText setText:nil];
+    }
+    self.passwordText.layer.borderColor = [UIColor colorWithRed:76.0/255 green:92.0/255 blue:104.0/255 alpha:1].CGColor;
+    [self.passwordText setText:nil];
+
+}
+
 // MARK: - Delegates
 
 // TextField
@@ -77,7 +101,7 @@
     [textField resignFirstResponder];
     return YES;
 }
-
+//здесь хотела указать ограничения на маленькие буквы и только английскую клавиатуру, но пока не получается
 - (BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)text {
     return ![text containsString:@"A"];
 }
