@@ -275,16 +275,6 @@
         }
 }
 
-//- (void)setHighlighted:(BOOL)highlighted {
-//    [super setHighlighted:highlighted];
-//
-//    if (highlighted) {
-//        self.backgroundColor = UIColorFromRGB(0x387038);
-//    } else {
-//        self.backgroundColor = UIColorFromRGB(0x5bb75b);
-//    }
-//}
-
 @end
 
 // MARK: - Keyboard category
